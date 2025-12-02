@@ -41,8 +41,8 @@ class Conv_Block(nn.Module):
             nn.Dropout(0.3),
             nn.LeakyReLU(),
         )
-        self.dim_match_conv = nn.Conv2d(in_channel, out_channel, 1)  # 1x1卷积用于通道匹配
-        self.dim_match_conv1 = nn.Conv2d(3*out_channel, out_channel, 1)  # 1x1卷积用于通道匹配
+        self.dim_match_conv = nn.Conv2d(in_channel, out_channel, 1)  
+        self.dim_match_conv1 = nn.Conv2d(3*out_channel, out_channel, 1)  
         self.activation = nn.LeakyReLU()
 
     def forward(self, x):
@@ -60,4 +60,5 @@ class Conv_Block(nn.Module):
         layer2 = torch.cat((layer23, layer25, layer27), dim=1)
         out2 = self.dim_match_conv1(layer2)
         out = self.activation(out2)
+
         return out
