@@ -84,15 +84,15 @@ class MSBEUNet(nn.Module):
         # self.Th = nn.Sigmoid()
 
     def forward(self, x):
-        r1 = self.e1(self.c1(x))            # 64*400*400
+        r1 = self.e1(self.c1(x))            
         t1 = self.g1(self.c1(x))
-        r2 = self.e2(self.c2(self.d1(r1)))  # 128*200*200
+        r2 = self.e2(self.c2(self.d1(r1)))  
         t2 = self.g2(self.c2(self.d1(r1)))
-        r3 = self.e3(self.c3(self.d2(r2)))  # 256*100*100
+        r3 = self.e3(self.c3(self.d2(r2)))  
         t3 = self.g3(self.c3(self.d2(r2)))
-        r4 = self.e4(self.c4(self.d3(r3)))  # 512*50*50
+        r4 = self.e4(self.c4(self.d3(r3)))  
         t4 = self.g4(self.c4(self.d3(r3)))
-        r5 = self.c5(self.d4(r4))           # 1024*25*25
+        r5 = self.c5(self.d4(r4))           
         s1 = self.u1(r5)
         t5 = self.s1(r5)
         t6 = self.c6(t5)
@@ -100,15 +100,14 @@ class MSBEUNet(nn.Module):
         t8 = self.c8(self.s3(t7 + t3))
         t9 = self.c9(self.s4(t8 + t2))
         t10 = t9 + t1
-        o1 = self.c6(self.C1(s1, r4))   # 512*50*50
-        s2 = self.u2(o1)                    # 512*100*100
-        o2 = self.c7(self.C2(s2, r3))   # 256*100*100
-        s3 = self.u3(o2)                    # 256*200*200
-        o3 = self.c8(self.C3(s3, r2))   # 128*200*200
-        s4 = self.u4(o3)                    # 128*400*400
-        o4 = self.c9(self.C4(s4, r1))   # 64*400*400
+        o1 = self.c6(self.C1(s1, r4))   
+        s2 = self.u2(o1)                    
+        o2 = self.c7(self.C2(s2, r3))   
+        s3 = self.u3(o2)                    
+        o3 = self.c8(self.C3(s3, r2))   
+        s4 = self.u4(o3)                    
+        o4 = self.c9(self.C4(s4, r1))   
         o5 = self.df(o4, t10)
-        # o5 = torch.cat((o4, t10), dim=1)
 
         return self.out(o5)
 
@@ -117,5 +116,6 @@ if __name__ == '__main__':
     x = torch.randn(2, 1, 64, 64)
     net = MSBEUNet()
     print(net(x).shape)
+
 
 
