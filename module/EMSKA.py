@@ -57,9 +57,9 @@ class SKAttention(nn.Module):
         V = (weights * torch.stack(conv_outs)).sum(0)
         return V
 
-class EMSKA(nn.Module):
+class SFA(nn.Module):
     def __init__(self, channels, reduction=16):
-        super(EMSKA, self).__init__()
+        super(SFA, self).__init__()
         self.ema = EMA(channels, reduction)
         self.sk_attention = SKAttention(channels, reduction=reduction)
         self.fuse = nn.Conv2d(2 * channels, channels, kernel_size=1)
@@ -73,6 +73,7 @@ class EMSKA(nn.Module):
 
 if __name__ == '__main__':
     input = torch.randn(1, 64, 64, 64)
-    unet_layer = EMSKA(64)
+    unet_layer = SFA(64)
     output = unet_layer(input)
+
     print(output.shape)  # Expect: torch.Size([1, 64, 64, 64])
